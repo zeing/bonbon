@@ -6,8 +6,8 @@ require('dotenv').config();
 
 // create LINE SDK client
 const config = {
-  channelAccessToken: process.env.YOUR_CHANNEL_ACCESS_TOKEN,
-  channelSecret: process.env.YOUR_CHANNEL_SECRET
+  channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
+  channelSecret: process.env.CHANNEL_SECRET
 }
 console.log(config)
 
@@ -15,11 +15,6 @@ const client = new line.Client(config);
 
 const app = express();
 
-
-// webhook callback
-app.get('/', line.middleware(config), (req, res) => {
-  res.send({eing:'eing'})
-});
 
 // webhook callback
 app.post('/webhook', line.middleware(config), (req, res) => {
@@ -59,8 +54,10 @@ function handleEvent(event) {
     case 'message':
       const message = event.message;
       switch (message.type) {
-        case 'text':
-          return handleText(message, event.replyToken);
+        case 'text': {
+          return
+          handleText(message, event.replyToken)
+        }
         case 'image':
           return handleImage(message, event.replyToken);
         case 'video':
@@ -124,7 +121,7 @@ function handleSticker(message, replyToken) {
   return replyText(replyToken, 'Got Sticker');
 }
 
-const port = process.env.port;
+const port = process.env.PORT;
 app.listen(port || 3000, () => {
   console.log(`listening on ${port}`);
 });
