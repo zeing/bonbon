@@ -55,7 +55,6 @@ const replyText = (token, texts) => {
 
 // Make post request on media endpoint. Pass file data as media parameter
 async function tweet(status) {
-  return true
   await clientTwitter.post("statuses/update", {status}, (error, tweets, response) => {
     if (!error) {
       return true
