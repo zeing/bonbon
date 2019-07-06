@@ -11,16 +11,16 @@ const config = {
 };
 
 /* GET index page. */
-router.get('/callback', (req, res) => {
+router.get('/webhook', (req, res) => {
   res.json({
-    title: 'Express'
+    title: 'webhook'
   });
 });
 
 // create LINE SDK client
 const client = new line.Client(config);
 
-router.post('/callback', line.middleware(config), (req, res) => {
+router.post('/webhook', line.middleware(config), (req, res) => {
   Promise
       .all(req.body.events.map(handleEvent))
       .then((result) => {
