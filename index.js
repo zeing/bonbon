@@ -1,19 +1,24 @@
 'use strict';
-
+const Twitter = require("twitter");
 const line = require('@line/bot-sdk');
 const express = require('express');
 require('dotenv').config();
+const app = express();
 
 // create LINE SDK client
 const config = {
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET
 }
-console.log(config)
 
 const client = new line.Client(config);
 
-const app = express();
+const clientTwitter = new Twitter({
+  consumer_key: process.env.consumer_key,
+  consumer_secret: process.env.consumer_secret,
+  access_token_key: process.env.access_token_key,
+  access_token_secret: process.env.access_token_secret
+});
 
 
 // webhook callback
@@ -48,16 +53,27 @@ const replyText = (token, texts) => {
   );
 };
 
+// Make post request on media endpoint. Pass file data as media parameter
+async function tweet(status) {
+  return true
+  await clientTwitter.post("statuses/update", {status}, (error, tweets, response) => {
+    if (!error) {
+      return true
+    } else {
+      return false
+    }
+  });
+}
+
+
 // callback function to handle a single event
 function handleEvent(event) {
   switch (event.type) {
     case 'message':
       const message = event.message;
       switch (message.type) {
-        case 'text': {
-          return
-          handleText(message, event.replyToken)
-        }
+        case 'text':
+          return handleText(message, event.replyToken);
         case 'image':
           return handleImage(message, event.replyToken);
         case 'video':
@@ -98,7 +114,8 @@ function handleEvent(event) {
 }
 
 function handleText(message, replyToken) {
-  return replyText(replyToken, message.text);
+  let result = tweet(message.text);
+  if(result) return replyText(replyToken,"Tweeted !!");
 }
 
 function handleImage(message, replyToken) {
