@@ -1,26 +1,30 @@
 {
-  "name": "bonbon",
-  "version": "0.0.0",
-  "description": "",
-  "private": true,
-  "main": "app.js",
+  "name": "line-bot-nodejs-starter",
+  "version": "1.0.0",
+  "description": "starter point to create new line bot project",
+  "main": "index.js",
   "scripts": {
-    "start": "node ./bin/start",
-    "test": "mocha --recursive"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "line",
+    "bot",
+    "messaging-api"
+  ],
+  "author": "Sitthi Thiammekha",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^5.5.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
   },
   "dependencies": {
-    "@line/bot-sdk": "^6.8.0",
-    "cookie-parser": "^1.4.4",
-    "debug": "^4.1.1",
-    "express": "^4.16.4",
-    "http-errors": "^1.7.2",
-    "morgan": "^1.9.1"
-  },
-  "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.16.0",
-    "eslint-plugin-jsx-a11y": "^6.2.1",
-    "eslint-plugin-react": "^7.12.4"
+    "@line/bot-sdk": "^6.2.1",
+    "dotenv": "^8.0.0",
+    "express": "^4.16.3"
   }
 }
