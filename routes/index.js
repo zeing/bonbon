@@ -8,6 +8,13 @@ const config = {
   channelSecret: process.env.CHANNEL_SECRET,
 };
 
+/* GET index page. */
+router.get('/', (req, res) => {
+  res.json({
+    title: 'Express'
+  });
+});
+
 // create LINE SDK client
 const client = new line.Client(config);
 
@@ -43,11 +50,5 @@ function handleEvent(event) {
 }
 
 
-/* GET index page. */
-router.get('/', (req, res) => {
-  res.json({
-    title: 'Express'
-  });
-});
 
 module.exports = router;
