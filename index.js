@@ -2,13 +2,14 @@
 
 const line = require('@line/bot-sdk');
 const express = require('express');
-require('dotenv').config()
+require('dotenv').config();
 
 // create LINE SDK client
-const client = new line.Client({
+const config = {
   channelAccessToken: process.env.YOUR_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.YOUR_CHANNEL_SECRET
-});
+}
+const client = new line.Client(config);
 
 const app = express();
 
