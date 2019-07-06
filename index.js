@@ -9,9 +9,17 @@ const config = {
   channelAccessToken: process.env.YOUR_CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.YOUR_CHANNEL_SECRET
 }
+console.log(config)
+
 const client = new line.Client(config);
 
 const app = express();
+
+
+// webhook callback
+app.get('/', line.middleware(config), (req, res) => {
+  res.send({eing:'eing'})
+});
 
 // webhook callback
 app.post('/webhook', line.middleware(config), (req, res) => {
