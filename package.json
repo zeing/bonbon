@@ -9,6 +9,7 @@
     "test": "mocha --recursive"
   },
   "dependencies": {
+    "@line/bot-sdk": "^6.8.0",
     "cookie-parser": "^1.4.4",
     "debug": "^4.1.1",
     "express": "^4.16.4",
