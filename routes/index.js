@@ -4,7 +4,6 @@ const line = require('@line/bot-sdk');
 const router = Router();
 // create LINE SDK config from env variables
 const config = {
-
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
   channelSecret: process.env.CHANNEL_SECRET,
 };
@@ -35,7 +34,6 @@ function handleMessageEvent(event) {
 
 
 function handleEvent(event) {
-
   console.log(event);
   if (event.type === 'message' && event.message.type === 'text') {
     handleMessageEvent(event);
