@@ -10,12 +10,14 @@ Clone and run
 npm install
 ```
 Rename `.env` instant of `.env.example` and modify your `key`
-```json
-{
-  "port" : "3000",
-  "channelAccessToken": "YOUR_CHANNEL_ACCESS_TOKEN",
-  "channelSecret": "YOUR_CHANNEL_SECRET"
-}
+```
+PORT = 
+CHANNEL_ACCESS_TOKEN =
+CHANNEL_SECRET =
+consumer_key =
+consumer_secret =
+access_token_key =
+access_token_secret =
 ```
 Run
 ```
