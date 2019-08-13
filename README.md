@@ -9,7 +9,7 @@ Clone and run
 ```
 npm install
 ```
-Modify `config.json`
+Rename `.env` instant of `.env.example` and modify your `key`
 ```json
 {
   "port" : "3000",
