@@ -1,5 +1,5 @@
-# line-bot-nodejs-starter
-starter point to create new line bot project
+# Bon Bon
+BonBon official 
 
 ## How it work
 Start express server to handle webhook from LINE
