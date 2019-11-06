@@ -32,4 +32,4 @@ path/to/ngrok http 3000
 config webhook url in developer console then enjoy your bot!
 
 ## Author
-Sitthi Thiammekha
+Witthawin Sirisiwaphak
