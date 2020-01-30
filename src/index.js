@@ -112,6 +112,7 @@ function handleEvent(event) {
 
 function handleText(message, replyToken) {
   let result = tweet(message.text);
+  console.log(result)
   if(result) return replyText(replyToken,`Tweeted !! | See at https://twitter.com/bon2_official/status/${result.id_str}`);
 }
 
