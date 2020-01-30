@@ -56,7 +56,7 @@ const replyText = (token, texts) => {
 async function tweet(status) {
   await clientTwitter.post("statuses/update", {status}, (error, tweets, response) => {
     if (!error) {
-      return true
+      return tweets
     } else {
       return false
     }
@@ -112,7 +112,7 @@ function handleEvent(event) {
 
 function handleText(message, replyToken) {
   let result = tweet(message.text);
-  if(result) return replyText(replyToken,"Tweeted !!");
+  if(result) return replyText(replyToken,`Tweeted !! | See at https://twitter.com/bon2_official/status/${tweets.id_str}`);
 }
 
 function handleImage(message, replyToken) {
