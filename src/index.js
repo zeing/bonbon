@@ -54,13 +54,7 @@ const replyText = (token, texts) => {
 
 // Make post request on media endpoint. Pass file data as media parameter
 function tweet(status) {
-  clientTwitter.post('statuses/update', {status})
-    .then((tweet) => {
-        return tweet
-    })
-    .catch((error) => {
-        return false
-    })
+  return clientTwitter.post('statuses/update', {status})
 }
 
 // callback function to handle a single event
@@ -111,9 +105,13 @@ function handleEvent(event) {
 }
 
 function handleText(message, replyToken) {
-  let result = tweet(message.text);
-  console.log(result)
-  if(result) return replyText(replyToken,`Tweeted !! | See at https://twitter.com/bon2_official/status/${result.id_str}`);
+  tweet(message.text).then((tweet) => {
+    console.log(tweet)
+    return replyText(replyToken,`Tweeted !! | See at https://twitter.com/bon2_official/status/${tweet.id_str}`);
+  })
+  .catch((error) => {
+      return replyText(replyToken,`error try again`);
+  })
 }
 
 function handleImage(message, replyToken) {
