@@ -4,7 +4,10 @@
   "description": "starter point to create new line bot project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "npm run build && node ./dist/index.js",
+    "nodemon": "nodemon ./src/index.js --exec babel-node -e js",
+    "build": "npm run clean && mkdir dist && babel src -s -d dist --copy-files",
+    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -12,7 +15,7 @@
     "bot",
     "messaging-api"
   ],
-  "author": "Sitthi Thiammekha",
+  "author": "Witthawin Sirisiwaphak",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^5.5.0",
@@ -23,6 +26,10 @@
     "eslint-plugin-standard": "^4.0.0"
   },
   "dependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/node": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
     "@line/bot-sdk": "^6.2.1",
     "dotenv": "^8.0.0",
     "express": "^4.16.3",

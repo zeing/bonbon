@@ -1,9 +1,0 @@
-{
-  "generator-express-es6": {
-    "promptValues": {
-      "viewEngine": "none",
-      "cssPreprocessor": "none",
-      "installDependencies": "yarn"
-    }
-  }
-}

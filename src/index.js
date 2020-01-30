@@ -20,7 +20,6 @@ const clientTwitter = new Twitter({
   access_token_secret: process.env.access_token_secret
 });
 
-
 // webhook callback
 app.post('/webhook', line.middleware(config), (req, res) => {
   // req.body.events should be an array of events
@@ -63,7 +62,6 @@ async function tweet(status) {
     }
   });
 }
-
 
 // callback function to handle a single event
 function handleEvent(event) {
