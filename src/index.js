@@ -1,5 +1,5 @@
 'use strict';
-const Twitter = require("twitter");
+const Twitter = require("twitter-lite");
 const line = require('@line/bot-sdk');
 const express = require('express');
 require('dotenv').config();
@@ -53,14 +53,14 @@ const replyText = (token, texts) => {
 };
 
 // Make post request on media endpoint. Pass file data as media parameter
-async function tweet(status) {
-  await clientTwitter.post("statuses/update", {status}, (error, tweets, response) => {
-    if (!error) {
-      return tweets
-    } else {
-      return false
-    }
-  });
+function tweet(status) {
+  clientTwitter.post('statuses/update', {status})
+    .then((tweet) => {
+        return tweet
+    })
+    .catch((error) => {
+        return false
+    })
 }
 
 // callback function to handle a single event
