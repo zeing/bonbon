@@ -1,9 +1,9 @@
 'use strict';
-const Twitter = require("twitter-lite");
 const line = require('@line/bot-sdk');
 const express = require('express');
 require('dotenv').config();
 const app = express();
+import { uploadImg, tweet } from './module/twitter-module'
 
 // create LINE SDK client
 const config = {
@@ -13,13 +13,6 @@ const config = {
 
 const client = new line.Client(config);
 
-const clientTwitter = new Twitter({
-  consumer_key: process.env.CONSUMER_KEY,
-  consumer_secret: process.env.CONSUMER_SECRET,
-  access_token_key: process.env.ACCESS_TOKEN_KEY,
-  access_token_secret: process.env.ACCESS_TOKEN_SECRET
-});
-
 // webhook callback
 app.post('/webhook', line.middleware(config), (req, res) => {
   // req.body.events should be an array of events
@@ -27,7 +20,8 @@ app.post('/webhook', line.middleware(config), (req, res) => {
     return res.status(500).end();
   }
   // handle events separately
-  Promise.all(req.body.events.map(event => {
+  Promise.all(req.body.events.map((event, index) => {
+    console.log(event, index)
     // console.log('event', event);
     // check verify webhook event
     if (event.replyToken === '00000000000000000000000000000000' ||
@@ -51,11 +45,6 @@ const replyText = (token, texts) => {
     texts.map((text) => ({ type: 'text', text }))
   );
 };
-
-// Make post request on media endpoint. Pass file data as media parameter
-function tweet(status) {
-  return clientTwitter.post('statuses/update', { status })
-}
 
 // callback function to handle a single event
 function handleEvent(event) {
@@ -105,17 +94,45 @@ function handleEvent(event) {
 }
 
 function handleText(message, replyToken) {
-  tweet(message.text).then((tweet) => {
-    return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweet.id_str}`);
-  })
+  tweet({ status: message.text })
+    .then((tweets) => {
+      return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweets.id_str}`);
+    })
     .catch((error) => {
+      console.log('tweet error', error)
       return replyText(replyToken, `error try again`);
     })
 }
 
 function handleImage(message, replyToken) {
-  return unavailableNow(message, replyToken)
-  return replyText(replyToken, 'Got Image');
+  let chunks = [];
+  client.getMessageContent(message.id)
+    .then((stream) => {
+      stream.on('data', (chunk) => {
+        chunks.push(chunk);
+      });
+      stream.on('end', (chunk) => {
+        let buf = Buffer.concat(chunks);
+        let base64Img = buf.toString('base64')
+        uploadImg({ media_data: base64Img })
+          .then((media) => {
+            return media.media_id_string
+          })
+          .then(media_ids => {
+            return tweet({ status: `Test media ${(new Date())}`, media_ids })
+          })
+          .then((tweets) => {
+            return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweets.id_str}`);
+          })
+          .catch((error) => {
+            console.log('error', error)
+            return replyText(replyToken, `error try again`);
+          })
+      });
+      stream.on('error', (err) => {
+        // error handling
+      });
+    });
 }
 
 function handleVideo(message, replyToken) {
