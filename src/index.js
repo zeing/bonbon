@@ -14,10 +14,10 @@ const config = {
 const client = new line.Client(config);
 
 const clientTwitter = new Twitter({
-  consumer_key: process.env.consumer_key,
-  consumer_secret: process.env.consumer_secret,
-  access_token_key: process.env.access_token_key,
-  access_token_secret: process.env.access_token_secret
+  consumer_key: process.env.CONSUMER_KEY,
+  consumer_secret: process.env.CONSUMER_SECRET,
+  access_token_key: process.env.ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.ACCESS_TOKEN_SECRET
 });
 
 // webhook callback
@@ -28,7 +28,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   }
   // handle events separately
   Promise.all(req.body.events.map(event => {
-    console.log('event', event);
+    // console.log('event', event);
     // check verify webhook event
     if (event.replyToken === '00000000000000000000000000000000' ||
       event.replyToken === 'ffffffffffffffffffffffffffffffff') {
@@ -54,7 +54,7 @@ const replyText = (token, texts) => {
 
 // Make post request on media endpoint. Pass file data as media parameter
 function tweet(status) {
-  return clientTwitter.post('statuses/update', {status})
+  return clientTwitter.post('statuses/update', { status })
 }
 
 // callback function to handle a single event
@@ -106,31 +106,41 @@ function handleEvent(event) {
 
 function handleText(message, replyToken) {
   tweet(message.text).then((tweet) => {
-    return replyText(replyToken,`Tweeted !! | See at https://twitter.com/bon2_official/status/${tweet.id_str}`);
+    return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweet.id_str}`);
   })
-  .catch((error) => {
-      return replyText(replyToken,`error try again`);
-  })
+    .catch((error) => {
+      return replyText(replyToken, `error try again`);
+    })
 }
 
 function handleImage(message, replyToken) {
+  return unavailableNow(message, replyToken)
   return replyText(replyToken, 'Got Image');
 }
 
 function handleVideo(message, replyToken) {
+  return unavailableNow(message, replyToken)
   return replyText(replyToken, 'Got Video');
 }
 
 function handleAudio(message, replyToken) {
+  return unavailableNow(message, replyToken)
   return replyText(replyToken, 'Got Audio');
 }
 
 function handleLocation(message, replyToken) {
+  return unavailableNow(message, replyToken)
   return replyText(replyToken, 'Got Location');
 }
 
 function handleSticker(message, replyToken) {
+  return unavailableNow(message, replyToken)
   return replyText(replyToken, 'Got Sticker');
+}
+
+function unavailableNow(message, replyToken) {
+  return replyText(replyToken, `${message.type} is unavailable now`);
+
 }
 
 const port = process.env.PORT;
