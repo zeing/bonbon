@@ -119,7 +119,7 @@ function handleImage(message, replyToken) {
             return media.media_id_string
           })
           .then(media_ids => {
-            return tweet({ status: `Test media ${(new Date())}`, media_ids })
+            return tweet({ status: ``, media_ids })
           })
           .then((tweets) => {
             return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweets.id_str}`);
