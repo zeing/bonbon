@@ -2,7 +2,8 @@
 const fs = require("fs");
 import _ from 'lodash'
 const Twitter = require("twitter-lite");
-require('dotenv').config();
+import env from 'env-smart';
+env.load();
 
 const clientTwitter_api = new Twitter({
   version: process.env.TWITTER_API_VERSION,

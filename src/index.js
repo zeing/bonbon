@@ -1,8 +1,10 @@
 'use strict';
 const line = require('@line/bot-sdk');
 const express = require('express');
-require('dotenv').config();
 const app = express();
+import env from 'env-smart';
+env.load();
+
 import { uploadImg, tweet } from './module/twitter-module'
 
 // create LINE SDK client
@@ -21,8 +23,7 @@ app.post('/webhook', line.middleware(config), (req, res) => {
   }
   // handle events separately
   Promise.all(req.body.events.map((event, index) => {
-    console.log(event, index)
-    // console.log('event', event);
+    // console.log(event, index)
     // check verify webhook event
     if (event.replyToken === '00000000000000000000000000000000' ||
       event.replyToken === 'ffffffffffffffffffffffffffffffff') {
@@ -68,9 +69,9 @@ function handleEvent(event) {
           throw new Error(`Unknown message: ${JSON.stringify(message)}`);
       }
 
-    case 'follow':
-      return replyText(event.replyToken, 'Got followed event');
-
+    case 'follow': {
+      return process.env.IS_ALLOW_FOLLOW_EVENT && replyText(event.replyToken, 'Got followed event');
+    }
     case 'unfollow':
       return console.log(`Unfollowed this bot: ${JSON.stringify(event)}`);
 
@@ -105,6 +106,8 @@ function handleText(message, replyToken) {
 }
 
 function handleImage(message, replyToken) {
+  if (!process.env.IS_ALLOW_IMAGE_EVENT) return unavailableNow(message, replyToken)
+  
   let chunks = [];
   client.getMessageContent(message.id)
     .then((stream) => {
