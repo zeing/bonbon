@@ -1,4 +1,4 @@
-# line-bot-nodejs-starter
+# BonBon
 starter point to create new line bot project
 
 ## How it work
