@@ -70,7 +70,7 @@ function handleEvent(event) {
       }
 
     case 'follow': {
-      return process.env.IS_ALLOW_FOLLOW_EVENT && replyText(event.replyToken, 'Got followed event');
+      return process.env.IS_ALLOW_FOLLOW_EVENT && replyText(event.replyToken, 'Got followed');
     }
     case 'unfollow':
       return console.log(`Unfollowed this bot: ${JSON.stringify(event)}`);
@@ -149,8 +149,18 @@ function handleAudio(message, replyToken) {
 }
 
 function handleLocation(message, replyToken) {
-  return unavailableNow(message, replyToken)
-  return replyText(replyToken, 'Got Location');
+  if (!process.env.IS_ALLOW_LOCATION_EVENT) return unavailableNow(message, replyToken)
+
+  const location  = `https://www.google.com/maps/search/?api=1&query=${message.latitude},${message.longitude}`
+  const messages = `${message.address} ${location}`
+  tweet({ status: messages })
+    .then((tweets) => {
+      return replyText(replyToken, `Tweeted !! | See at https://twitter.com/bon2_official/status/${tweets.id_str}`);
+    })
+    .catch((error) => {
+      console.log('tweet error', error)
+      return replyText(replyToken, `error try again`);
+    })
 }
 
 function handleSticker(message, replyToken) {
